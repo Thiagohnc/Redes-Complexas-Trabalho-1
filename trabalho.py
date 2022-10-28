@@ -34,28 +34,15 @@ def distances(graph):
 
     return dist_samples
 
-def approximate_distance_1(graph):
-    teste = []
+def approximate_distance(graph, nrand):
+    distances = []
     nodes = list(graph.nodes)
-    rand_idx = np.random.randint(0, len(nodes), 10 * len(nodes) + 50)
-    i = 0
-    for u in nodes:
-        for _ in range(10):
-            v = nodes[rand_idx[i]]
-            teste.append(nx.shortest_path_length(G, str(u), str(v)))
-            i += 1
-    return teste
-
-def approximate_distance_2(graph):
-    teste = []
-    nodes = list(graph.nodes)
-    N = len(nodes) * 10
-    rand_idx = np.random.randint(0, len(nodes), N)
-    for i in range(N//2):
+    rand_idx = np.random.randint(0, len(nodes), nrand * 2)
+    for i in range(nrand):
         u = nodes[rand_idx[2*i]]
         v = nodes[rand_idx[2*i + 1]]
-        teste.append(nx.shortest_path_length(G, str(u), str(v)))
-    return teste
+        distances.append(nx.shortest_path_length(G, str(u), str(v)))
+    return distances
 
 with open(r'files\oregon1_010331.txt', 'r') as file:
     lines = file.read().splitlines()
@@ -74,4 +61,4 @@ calculate_metrics(node_clusterization(G), 'Clusterização')  # todo pegar a clu
 
 
 
-calculate_metrics(approximate_distance_1(G), 'Teste distância')
+calculate_metrics(approximate_distance(G, nrand=1000), 'Teste distância')
