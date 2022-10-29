@@ -2,6 +2,7 @@ import random
 
 import networkx as nx
 import numpy as np
+import matplotlib.pyplot as plt
 
 G = nx.Graph()
 
@@ -14,6 +15,30 @@ def calculate_metrics(sample, sample_name):
     print('Mediana:', round(np.median(sample), 4))
     print('Desvio Padrão:', round(np.std(sample), 4))
     print('--------------------')
+
+def plot_normalized_histogram(sample):
+    bin_max_number = 0
+    bin_size = 1
+    x, y, z = [], [], []
+
+    sample.sort()
+    for i in range(len(sample)):
+        if sample[i] <= bin_max_number:
+            y[-1] += 1
+        else:
+            bin_max_number += bin_size
+            x.append(bin_max_number)
+            y.append(1)
+            z.append(bin_size)
+            bin_size *= 2
+
+    x = np.array(x)
+    y = np.array(y)
+    y = y/len(sample)  # Getting fraction of the counts
+    y = y/z  # Normalizing
+
+    plt.loglog(x, y, '+')
+    plt.show()
 
 def degrees(graph):
     return [i[1] for i in nx.degree(graph)]
@@ -44,7 +69,7 @@ def approximate_distance(graph, nrand):
         distances.append(nx.shortest_path_length(G, str(u), str(v)))
     return distances
 
-with open(r'files\oregon1_010331.txt', 'r') as file:
+with open(r'files\Email-EuAll.txt', 'r') as file:
     lines = file.read().splitlines()
     for line in lines:
         line = line.strip()
@@ -58,7 +83,6 @@ calculate_metrics(degrees(G), 'Grau')
 calculate_metrics(connected_component_sizes(G), 'Tamanho das CC')
 calculate_metrics(node_clusterization(G), 'Clusterização')  # todo pegar a clusterização global pelos triângulos
 #calculate_metrics(distances(G), 'Distância')
-
-
-
 calculate_metrics(approximate_distance(G, nrand=1000), 'Teste distância')
+
+plot_normalized_histogram(degrees(G))
