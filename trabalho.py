@@ -19,7 +19,7 @@ def calculate_metrics(sample, sample_name):
 def plot_normalized_histogram(sample):
     bin_max_number = 0
     bin_size = 1
-    x, y, z = [], [], []
+    x, y, bin_sizes = [], [], []
 
     sample.sort()
     for i in range(len(sample)):
@@ -29,13 +29,13 @@ def plot_normalized_histogram(sample):
             bin_max_number += bin_size
             x.append(bin_max_number)
             y.append(1)
-            z.append(bin_size)
+            bin_sizes.append(bin_size)
             bin_size *= 2
 
     x = np.array(x)
     y = np.array(y)
     y = y/len(sample)  # Getting fraction of the counts
-    y = y/z  # Normalizing
+    y = y/bin_sizes  # Normalizing
 
     plt.loglog(x, y, '+')
     plt.show()
@@ -83,6 +83,6 @@ calculate_metrics(degrees(G), 'Grau')
 calculate_metrics(connected_component_sizes(G), 'Tamanho das CC')
 calculate_metrics(node_clusterization(G), 'Clusterização')  # todo pegar a clusterização global pelos triângulos
 #calculate_metrics(distances(G), 'Distância')
-calculate_metrics(approximate_distance(G, nrand=1000), 'Teste distância')
+calculate_metrics(approximate_distance(G, nrand=10000), 'Teste distância')
 
 plot_normalized_histogram(degrees(G))
