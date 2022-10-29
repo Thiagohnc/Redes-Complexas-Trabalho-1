@@ -54,6 +54,17 @@ def plot_ccdf(sample):
     plt.loglog(x, y, '.')
     plt.show()
 
+# fixme result seems to be wrong
+def estimate_by_ccdf(sample):
+    x0 = min(sample)
+    n = len(sample)
+    sample = np.array(sample)
+
+    a = n / np.sum(np.log(sample/x0))
+
+    print(a)
+    return a
+
 def degrees(graph):
     return [i[1] for i in nx.degree(graph)]
 
