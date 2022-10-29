@@ -37,7 +37,21 @@ def plot_normalized_histogram(sample):
     y = y/len(sample)  # Getting fraction of the counts
     y = y/bin_sizes  # Normalizing
 
-    plt.loglog(x, y, '+')
+    plt.loglog(x, y, '.')
+    plt.show()
+
+def plot_ccdf(sample):
+    x, y, bin_sizes = [], [], []
+
+    sample.sort()
+    uniques, counts = np.unique(np.array(sample), return_counts=True)
+    total = sum(counts)
+    total2 = sum(counts)
+    for i in range(len(uniques)):
+        x.append(uniques[i])
+        y.append(total/total2)
+        total -= counts[i]
+    plt.loglog(x, y, '.')
     plt.show()
 
 def degrees(graph):
@@ -69,7 +83,7 @@ def approximate_distance(graph, nrand):
         distances.append(nx.shortest_path_length(G, str(u), str(v)))
     return distances
 
-with open(r'files\Email-EuAll.txt', 'r') as file:
+with open(r'files\oregon1_010331.txt', 'r') as file:
     lines = file.read().splitlines()
     for line in lines:
         line = line.strip()
@@ -81,8 +95,9 @@ with open(r'files\Email-EuAll.txt', 'r') as file:
 
 calculate_metrics(degrees(G), 'Grau')
 calculate_metrics(connected_component_sizes(G), 'Tamanho das CC')
-calculate_metrics(node_clusterization(G), 'Clusterização')  # todo pegar a clusterização global pelos triângulos
+#calculate_metrics(node_clusterization(G), 'Clusterização')  # todo pegar a clusterização global pelos triângulos
 #calculate_metrics(distances(G), 'Distância')
-calculate_metrics(approximate_distance(G, nrand=10000), 'Teste distância')
+#calculate_metrics(approximate_distance(G, nrand=10000), 'Teste distância')
 
-plot_normalized_histogram(degrees(G))
+#plot_ccdf(degrees(G))
+plot_ccdf(connected_component_sizes(G))
