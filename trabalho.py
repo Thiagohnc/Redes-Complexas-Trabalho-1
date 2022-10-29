@@ -87,10 +87,14 @@ with open(r'files\oregon1_010331.txt', 'r') as file:
     lines = file.read().splitlines()
     for line in lines:
         line = line.strip()
-        if line[0] == '#':
+        if line[0] in ['#', '%']:
             continue
 
-        line = line.split('\t')
+        if '\t' in line:
+            line = line.split('\t')
+        else:
+            line = line.split(' ')
+
         G.add_edge(line[0], line[1])
 
 calculate_metrics(degrees(G), 'Grau')
@@ -99,5 +103,4 @@ calculate_metrics(connected_component_sizes(G), 'Tamanho das CC')
 #calculate_metrics(distances(G), 'Distância')
 #calculate_metrics(approximate_distance(G, nrand=10000), 'Teste distância')
 
-#plot_ccdf(degrees(G))
-plot_ccdf(connected_component_sizes(G))
+plot_ccdf(degrees(G))
