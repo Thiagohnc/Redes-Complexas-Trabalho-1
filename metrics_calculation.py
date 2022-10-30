@@ -17,7 +17,7 @@ def degrees(graph):
     return [i[1] for i in nx.degree(graph)]
 
 
-def connected_component_sizes(graph):
+def connected_components_sizes(graph):
     return [len(i) for i in nx.connected_components(graph)]
 
 
@@ -36,6 +36,15 @@ def distances(graph):
     return dist_samples
 
 
+def vertices_distance(graph, u, v):
+    try:
+        return nx.shortest_path_length(graph, str(u), str(v))
+    # if the graph is a DiGraph and there is no path from u to v, try again from v to u
+    except nx.exception.NetworkXNoPath:
+        if isinstance(graph, nx.DiGraph):
+            return nx.shortest_path_length(graph, str(v), str(u))
+
+
 def approximate_distance(graph, nrand):
     dists = []
     nodes = list(graph.nodes)
@@ -44,8 +53,10 @@ def approximate_distance(graph, nrand):
         u = nodes[rand_idx[2 * i]]
         v = nodes[rand_idx[2 * i + 1]]
         while True:
+            while u == v:
+                v = nodes[np.random.randint(0, len(nodes))]
             try:
-                dists.append(nx.shortest_path_length(graph, str(u), str(v)))
+                dists.append(vertices_distance(graph, u, v))
             # if there is no path, try again with random vertices
             except nx.exception.NetworkXNoPath:
                 u = nodes[np.random.randint(0, len(nodes))]
