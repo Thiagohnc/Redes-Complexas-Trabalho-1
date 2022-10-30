@@ -2,8 +2,11 @@ import os
 import networkx as nx
 
 
-def read_edgelist(file_path):
-    G = nx.Graph()
+def read_edgelist(file_path, graph_type):
+    if graph_type == 'graph':
+        G = nx.Graph()
+    elif graph_type == 'digraph':
+        G = nx.DiGraph()
     with open(file_path, 'r') as file:
         lines = file.read().splitlines()
         for line in lines:
@@ -28,10 +31,10 @@ def read_gml(file_path):
 def read_graphml(file_path):
     return nx.read_graphml(file_path)
 
-def read_file(filename):
+def read_file(filename, graph_type=None):
     file_path = os.path.join('files', filename)
     if filename.endswith('.txt') or filename.endswith('.csv'):
-        return read_edgelist(file_path)
+        return read_edgelist(file_path, graph_type)
     elif filename.endswith('.gml'):
         return read_gml(file_path)
     elif filename.endswith('.graphml'):
