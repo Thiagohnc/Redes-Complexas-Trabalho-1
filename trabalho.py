@@ -44,12 +44,12 @@ def plot_ccdf(sample):
 
     sample.sort()
     uniques, counts = np.unique(np.array(sample), return_counts=True)
+    total_remaining = sum(counts)
     total = sum(counts)
-    total2 = sum(counts)
     for i in range(len(uniques)):
         x.append(uniques[i])
-        y.append(total/total2)
-        total -= counts[i]
+        y.append(total_remaining/total)
+        total_remaining -= counts[i]
     plt.loglog(x, y, '.')
     plt.show()
 
