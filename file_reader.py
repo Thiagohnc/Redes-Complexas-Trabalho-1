@@ -25,11 +25,16 @@ def read_gml(file_path):
     return nx.read_gml(file_path)
 
 
+def read_graphml(file_path):
+    return nx.read_graphml(file_path)
+
 def read_file(filename):
     file_path = os.path.join('files', filename)
     if filename.endswith('.txt') or filename.endswith('.csv'):
         return read_edgelist(file_path)
     elif filename.endswith('.gml'):
         return read_gml(file_path)
+    elif filename.endswith('.graphml'):
+        return read_graphml(file_path)
 
     raise Exception('File extension not recognized')
