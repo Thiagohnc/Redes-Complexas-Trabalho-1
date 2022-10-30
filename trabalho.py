@@ -3,8 +3,7 @@ import random
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
-
-G = nx.Graph()
+from file_reader import read_file
 
 def calculate_metrics(sample, sample_name):
     print('*', sample_name, '*')
@@ -94,19 +93,7 @@ def approximate_distance(graph, nrand):
         distances.append(nx.shortest_path_length(G, str(u), str(v)))
     return distances
 
-with open(r'files\oregon1_010331.txt', 'r') as file:
-    lines = file.read().splitlines()
-    for line in lines:
-        line = line.strip()
-        if line[0] in ['#', '%']:
-            continue
-
-        if '\t' in line:
-            line = line.split('\t')
-        else:
-            line = line.split(' ')
-
-        G.add_edge(line[0], line[1])
+G = read_file('Email-EuAll.txt')
 
 calculate_metrics(degrees(G), 'Grau')
 calculate_metrics(connected_component_sizes(G), 'Tamanho das CC')
@@ -114,4 +101,4 @@ calculate_metrics(connected_component_sizes(G), 'Tamanho das CC')
 #calculate_metrics(distances(G), 'Distância')
 #calculate_metrics(approximate_distance(G, nrand=10000), 'Teste distância')
 
-plot_ccdf(degrees(G))
+plot_ccdf(connected_component_sizes(G))
