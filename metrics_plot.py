@@ -27,7 +27,7 @@ def plot_normalized_histogram(sample):
     plt.show()
 
 
-def plot_ccdf(sample):
+def plot_ccdf(sample, loglog=True):
     x, y, bin_sizes = [], [], []
 
     sample.sort()
@@ -38,7 +38,10 @@ def plot_ccdf(sample):
         x.append(uniques[i])
         y.append(total_remaining / total)
         total_remaining -= counts[i]
-    plt.loglog(x, y, '.')
+    if loglog:
+        plt.loglog(x, y, '.')
+    else:
+        plt.plot(x, y, '.')
     plt.show()
 
 
