@@ -21,6 +21,14 @@ def connected_components_sizes(graph):
     return [len(i) for i in nx.connected_components(graph)]
 
 
+def strongly_connected_components_sizes(graph):
+    return [len(i) for i in nx.strongly_connected_components(graph)]
+
+
+def weakly_connected_components_sizes(graph):
+    return [len(i) for i in nx.weakly_connected_components(graph)]
+
+
 def node_clusterization(graph):
     return list(nx.clustering(graph).values())
 
