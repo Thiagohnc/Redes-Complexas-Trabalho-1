@@ -48,8 +48,8 @@ def approximate_distance(graph, nrand):
                 dists.append(nx.shortest_path_length(graph, str(u), str(v)))
             # if there is no path, try again with random vertices
             except nx.exception.NetworkXNoPath:
-                u = np.random.randint(0, len(nodes))
-                v = np.random.randint(0, len(nodes))
+                u = nodes[np.random.randint(0, len(nodes))]
+                v = nodes[np.random.randint(0, len(nodes))]
                 continue
             break
 
